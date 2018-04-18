@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+*{margin:0;padding: 0;}
+    div{
+        width: 260px;
+        height: 200px;
+        border-radius:5px;
+        margin:100px auto;
+        border: 1px solid #000;
+        padding:20px;
+        position:relative;
+    }
+    input{
+            border-radius:5px;
+
+        }
+    p{
+        margin-top:20px;
+        text-align:center;
+    }
+    .info{
+
+        position:absolute;
+        border-radius:5px;
+        font-size:12px;
+        color:red;
+        right:0;
+        top:0;
+        display:none;
+        background:yellow;
+        text-align:center;
+        padding:0px 5px;
+    }
+    a{
+        display:line-block;
+        width: 50px;
+        height: 15px;
+        border: 1px solid skyblue;
+        text-decoration:none;
+        border-radius:5px;
+        font-size:11px;
+        background:lightblue;
+        color:#fff;
+    }
+
+</style>
+    <meta charset="utf-8">
+</head>
+    <body>
+    <!-- <form action="jop_2_2_enroll.php" method="get"> -->
+    <form action="jop_2_2_enroll.php" method="post">
+        <div >
+            <p>帐号：<input type="text" name="enrollid" value=""></p>
+            <p class="info" id="info"></p>
+            <p>密码：<input type="password" name="enrollpwd"></p>
+            <p><input type="submit"  value="注册"></p>
+            <p><a href="join.php">返回登录页面</a></p>
+        </div>
+    </from>
+    </body>
+</html>
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+     //注册按钮事件
+     var btn = document.getElementsByTagName("input")[2];
+     var pn = document.getElementsByTagName("input")[0];
+     var pw = document.getElementsByTagName("input")[1];
+     var info = document.getElementById("info");
+
+     pn.onblur = function(){
+        //离开input事件。
+        //能力检测！
+        if(window.XMLHttpRequest){
+            var xhr = new XMLHttpRequest();
+        }else{
+            var xhr = new ActiveXObject("msxml2.0.XMLHTTP");
+        }
+        //当离开input时，触发onreadystatechange事件
+        xhr.onreadystatechange = function(){
+            //判断HTTP状态码是否接收成功。
+            if(xhr.status == 200 || xhr.status == 304){
+                //判断就绪状态码是否==4
+                if(xhr.readyState == 4){
+                    //判断数据库里面是否存在
+                    if(xhr.responseText == 0){
+                        info.style.display="block";
+                        info.innerHTML = "用户名可以使用。";
+                    }else{
+                        info.innerHTML = "您所输入的用户名\""+pn.value+"\"已经存在，请重新输入！";
+                        info.style.display="block";
+                        pn.value = "";
+                    }
+                    //检测php输出了什么值
+                    // console.log(xhr.responseText)
+
+                }
+            }
+        }
+                //get的方法发送请求。
+                // xhr.open("get","jop_2_2.php?name="+this.value,true);
+                // xhr.send(null);
+
+
+                //post的方法发送请求。
+                xhr.open("post","jop_2_2.php",true);
+                //用post的方法需要多加一行代码。
+                xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                xhr.send("name="+this.value);
+
+
+     }
+
+</script>
